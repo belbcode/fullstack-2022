@@ -1,62 +1,114 @@
-const Header = (props) => {
-  return [
-  <h1>{props.course}</h1>
-  ]
-}
-const Content = (props) => {
-  //console.log(props.parts)
-  return (
-    <div>
-    <Format array = {props.parts}/>
-    </div>
-  )
-}
-const Format = (props) => {
-  console.log(props)
-  let array = [];
-  props.array.forEach((element)=> {
-    array.push(<p>{element.name} {element.exercises}</p>)
-  })
-  return array
+// const Hello = ({name, age}) => {
+//   const bornYear = () => new Date().getFullYear() - age
+//   return (
+//     <div>
+//       <p>
+//         Hello {name}, you are {age} years old
+//       </p>
+//       <p>So you were prob born in {bornYear()}</p>
+//     </div>
+//   )
+// }
 
-}
-const Total = (props) => {
-  let sumtotal = 0;
-  props.parts.forEach(element => {
-    sumtotal += element.exercises
-  })
-  return [
-  <p>The total number of exercises is {sumtotal}</p>
-  ]
-}
 
+// import {useState} from 'react'
+
+// const Display = ({counter}) => <div>{counter}</div>
+// const Button = (props) => {
+//   return (
+//   <div>
+//     <button onClick={props.onClick}>
+//       {props.text}
+//     </button>
+//   </div>
+//   )
+// }
+
+// const App = () => {
+//   const [count, setCount] = useState(0);
+
+  // const handleClick = () => {
+  //   console.log(`yar I have a ${count} inch peg leg`)
+  //   setCount(count+1)
+  // }
+
+//   console.log("rendering" , count)
+//     return (
+//       <div>
+//         <Display counter = {count}/>
+//         <Button onClick = {() => setCount(count + 1)} text = "Up"/>
+//         <Button onClick = {() => setCount(count - 1)} text = "Down"/>
+//       </div>
+//     )
+// }
+
+// export default App
+
+import {useState} from 'react'
 
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ],
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+
+  const [allClicks, setAll] = useState([])
+  const [ratio, setRatio] = useState({left:0, right:0})
+
+  const handleLeft = () => {
+    setAll(allClicks.concat('L'))
+    setLeft(left + 1)
+    setRatio({...ratio, left:ratio.left+1})
+  }
+
+  const handleRight = () => {
+    setAll(allClicks.concat('R'))
+    setRight(right + 1)
+    setRatio({...ratio, right:ratio.right+1})
+  }
+
+  const History = (props)=> {
+    if(allClicks.length === 0) {
+      return (
+        <div>Use the app by pressing on the keys </div>
+      )
+    }
+    return (
+      <div>
+        button presses: {props.allClicks.join(' ')}
+      </div>
+    )
+
+  }
+
+  const Button = (props) => {
+    return (
+      <div>
+        <button onClick = {props.handler}>{props.text}</button>
+      </div>
+    )
+  }
+
+  const Ratio = (props) => {
+    console.log(typeof NaN)
+    if( isNaN( props.ratios.left/props.ratios.right)) {
+      return (
+        <div>L over R: None yet</div>
+      )
+    }
+    return (
+      <div>L over R: {props.ratios.left/props.ratios.right}</div>
+    )
   }
 
   return (
     <div>
-    <Header course={course.name} />
-    <Content parts={course.parts} />
-    <Total parts={course.parts} />
-  </div>
+      {left}
+      <Button handler = {handleLeft} text = {"left"}/>
+      <Button handler = {handleRight} text = {"right"}/>
+      {right}
+      <History allClicks = {allClicks} />
+      <Ratio ratios = {ratio} />
+    </div>
   )
 }
-
+console.log(0/0)
 export default App
