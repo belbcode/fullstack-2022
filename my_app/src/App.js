@@ -72,9 +72,8 @@ const TotalSec = (props) => {
   let elements = [];
   let count = 0
   for(let element of props.list) {
-    console.log(element.total)
     count += element.total
-    elements.push(<div key={element.name}>{element.name} {element.total}</div>);
+    elements.push(<td key={element.name}> {element.name} {element.total}</td>);
   }
   if(count === 0) {
     return (
@@ -82,6 +81,24 @@ const TotalSec = (props) => {
     )
   }
   return elements
+}
+
+const Stats = (props) => {
+  const total = (props) => {
+    let count = 0
+    Object.values(props).forEach(value => {
+      count += value
+    })
+    return count
+  };
+  const average = (props.good - props.bad) / total(props)
+  const percent = (prop.good/total)*100
+  return (
+    <div>
+      <div>Average: {average}</div>
+      <div>Percent: {percent}</div>
+    </div>
+  )
 }
 
 const App = () => {
@@ -105,7 +122,15 @@ const App = () => {
       <h1>Give Feedback</h1>
       <ButtonSec list = {theList} />
       <h1>Statistics</h1>
-      <TotalSec list = {theTotals}/>
+      <table>
+        <col>
+          <TotalSec list = {theTotals}/>
+        </col>
+        <col>
+
+        </col>
+
+      </table>
     </div>
   )
 }
