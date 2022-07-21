@@ -1,19 +1,80 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const randomAnecdote = (fn, list, current) => {
+const randomAnecdote = (setter, list, current) => {
   let num = Math.floor(Math.random()*list.length)
   if(num === current) {
-    return randomAnecdote(fn, list)
+    return randomAnecdote(setter, list)
   }
-  fn(num)
+  setter(num)
+}
+
+const increment = (setter, list, current) => {
+  const copy = [...list]
+  copy[current] += 1;
+  setter(copy)
+}
+
+// const mostVotes = (list, state) => {
+//   for(let i = 0; i < list.length; i++) {
+//     // console.log("hello")
+//     if(list[i]>=state) {
+//       return i
+//     }
+//   }
+// }
+
+
+const instantiateVotes = (listLength) => {
+  let arr = [];
+  for(let i = 0; i < listLength; i++) {
+    arr = arr.concat(0)
+  }
+  return arr
 }
 
 const Button = (props) => {
   return (
     <div>
-      <button onClick={()=>props.fn(props.setter, props.list, props.current)}>click for wisdom</button>
+      <button onClick={()=>props.fn(props.setter, props.list, props.current)}>{props.text}</button>
     </div>
   )
+}
+// const MyComponent = (props) => {
+//   console.log(props)
+//   let newdex = mostVotes(props.list, props.state)
+//   console.log(newdex)
+//   props.setter(newdex)
+//   return (
+//     <div>{props.quotes[newdex]}</div>
+//   )
+
+// }
+
+const indexMost = (votes, most) => {
+  let rtnval = null
+  for(let i = 0; i < votes.length; i++) {
+    if(votes[i] >= most) {
+      most = votes[i]
+      rtnval = i
+    }
+  }
+  if(most===0) {
+    return null
+  }
+  return rtnval
+}
+
+const AOfTheDay = (props) => {
+  let votes = [props.votes]
+  useEffect(() =>  {
+    let thenew = indexMost(props.votes, props.index)
+    props.newdex(thenew)
+  }, [votes])
+
+  return (
+    <div>{props.anecdote[props.index]} {props.votes[props.index]}</div>
+  )
+
 }
 
 const App = () => {
@@ -28,11 +89,19 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0);
-  console.log(selected)
+  const [votes, vote] = useState(instantiateVotes(anecdotes.length))
+  const [index, newdex] = useState(0)
+  // const [most, index] = useState(0)
+  // const myComponent = () => {mostVotes(index, votes, most)}
+  //<MyComponent setter = {index} list = {votes} state = {most} quotes = {anecdotes}/>
   return (
     <div>
-      <Button fn={randomAnecdote} setter ={setSelected} list= {anecdotes} current = {selected}/>
+      <Button fn={randomAnecdote} setter ={setSelected} list= {anecdotes} current = {selected} text = "click for wisdom"/>
+      <Button text = "vote" fn = {increment} setter = {vote} list = {votes} current = {selected} />
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
+      <h1>anecdote with the most votes</h1>
+      <AOfTheDay votes = {votes} anecdote = {anecdotes} index = {index} newdex = {newdex}/>
     </div>
   )
 }
