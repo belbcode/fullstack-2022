@@ -20,10 +20,13 @@ const Header = ({course}) => {
 
 }
 const CourseCount = ({courseArray}) => {
-  let courseSum = 0
-  for(let part of courseArray) {
-    courseSum += part.exercises
-  }
+  const arrayOfExercises = courseArray.map((item)=> item.exercises)
+  console.log(arrayOfExercises);
+  const initialvalue = 0
+  const courseSum = arrayOfExercises.reduce(
+    (previousValue, currentValue) => previousValue + currentValue,
+  initialvalue
+  );
   return (
     <div>
       <b>total of {courseSum} exercises</b>
