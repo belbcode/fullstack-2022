@@ -19,11 +19,23 @@ const Header = ({course}) => {
   )
 
 }
+const CourseCount = ({courseArray}) => {
+  let courseSum = 0
+  for(let part of courseArray) {
+    courseSum += part.exercises
+  }
+  return (
+    <div>
+      <b>total of {courseSum} exercises</b>
+    </div>
+  )
+}
 const Course = (props) => {
   return (
     <div>
       <Header course = {props.course} />
       <Content courseArray = {props.course.parts}/>
+      <CourseCount courseArray = {props.course.parts}/>
     </div>
   )
 }
@@ -47,6 +59,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
