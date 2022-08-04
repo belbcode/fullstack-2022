@@ -21,7 +21,6 @@ const Header = ({course}) => {
 }
 const CourseCount = ({courseArray}) => {
   const arrayOfExercises = courseArray.map((item)=> item.exercises)
-  console.log(arrayOfExercises);
   const initialvalue = 0
   const courseSum = arrayOfExercises.reduce(
     (previousValue, currentValue) => previousValue + currentValue,
@@ -34,44 +33,68 @@ const CourseCount = ({courseArray}) => {
   )
 }
 const Course = (props) => {
+  console.log(props)
+  const courseA = []
+  props.course.forEach((course) => {
+    console.log(course)
+      courseA.push(<div>
+      <Header course = {course} />
+      <Content courseArray = {course.parts}/>
+      <CourseCount courseArray = {course.parts}/>
+    </div>)
+  })
   return (
-    <div>
-      <Header course = {props.course} />
-      <Content courseArray = {props.course.parts}/>
-      <CourseCount courseArray = {props.course.parts}/>
-    </div>
+    [courseA]
   )
 }
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      },
-      {
-        name: 'Redux',
-        exercises: 11,
-        id: 4
-      }
-    ]
-  }
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
 
-  return <Course course = {course} />
+  return <Course course = {courses} />
 }
 
 export default App
